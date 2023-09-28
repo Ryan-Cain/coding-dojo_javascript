@@ -1,0 +1,2 @@
+Create a new component called PersonCard to display a single person's set of information using props for values
+Call the Person component repeatedly using different prop values to display 4 unique sets of information

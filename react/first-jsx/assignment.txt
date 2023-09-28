@@ -1,0 +1,3 @@
+Create a create-react-app app
+Use JSX to display "Hello Dojo"
+Use JSX to display a todo list
