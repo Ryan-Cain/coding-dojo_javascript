@@ -1,0 +1,8 @@
+.box-maker {
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+}
+.box-maker input {
+  margin: 10px;
+}
