@@ -10,12 +10,13 @@ const BoxDisplay = ({ boxes }) => {
 			}}
 		>
 			{boxes.map((box, i) => {
+				console.log(box);
 				return (
 					<div
 						style={{
-							backgroundColor: box,
-							height: "75px",
-							width: "75px",
+							backgroundColor: box.color,
+							height: box.size + "px",
+							width: box.size + "px",
 							margin: "10px",
 						}}
 					></div>

@@ -5,8 +5,8 @@ import BoxDisplay from "./components/BoxDisplay";
 
 const App = () => {
 	const [boxes, setBoxes] = useState([]);
-	const boxers = (newBoxes) => {
-		setBoxes([...boxes, newBoxes]);
+	const boxers = (newBox) => {
+		setBoxes([...boxes, newBox]);
 	};
 	return (
 		<>
