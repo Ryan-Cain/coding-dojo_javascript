@@ -1,13 +1,15 @@
 import "./App.css";
 import AddTodo from "./components/AddTodo";
 import ListDisplay from "./components/ListDisplay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-	const [todoList, setTodoList] = useState([
-		{ content: "create todo list", checked: false },
-		{ content: "hang out with fam", checked: true },
-	]);
+	let storedItems = JSON.parse(localStorage.getItem("todoList"));
+	if (!storedItems) {
+		storedItems = [];
+	}
+
+	const [todoList, setTodoList] = useState(storedItems);
 
 	const addTodoItem = (todo) => {
 		let todoItem = {
@@ -16,25 +18,44 @@ function App() {
 		};
 		setTodoList([...todoList, todoItem]);
 	};
+
 	const changeTodoStatus = (updateIdx) => {
 		console.log("update", updateIdx);
-		//copy state
 		const todoListCopy = [...todoList];
 		todoListCopy[updateIdx].checked = !todoListCopy[updateIdx].checked;
 		setTodoList(todoListCopy);
 	};
 	const deleteTodo = (deleteIdx) => {
 		console.log("delete", deleteIdx);
-		//copy state
-		const todoListCopy = [...todoList];
-		todoListCopy[deleteIdx].checked = !todoListCopy[deleteIdx].checked;
+		const todoListCopy = [
+			...todoList.slice(0, deleteIdx),
+			...todoList.slice(deleteIdx + 1),
+		];
 		setTodoList(todoListCopy);
 	};
 
+	const clearCompleted = () => {
+		// this isnt working properly
+		const filteredList = [...todoList].filter((todo) => !todo.checked);
+		setTodoList(filteredList);
+	};
+
+	useEffect(() => {
+		localStorage.setItem("todoList", JSON.stringify(todoList));
+	}, [todoList]);
+
 	return (
 		<div className="App">
-			<AddTodo addTodoItem={addTodoItem} />
-			<ListDisplay changeStatus={changeTodoStatus} todoList={todoList} />
+			<AddTodo
+				addTodoItem={addTodoItem}
+				todoList={todoList}
+				clearCompleted={clearCompleted}
+			/>
+			<ListDisplay
+				deleteTodo={deleteTodo}
+				changeStatus={changeTodoStatus}
+				todoList={todoList}
+			/>
 		</div>
 	);
 }
