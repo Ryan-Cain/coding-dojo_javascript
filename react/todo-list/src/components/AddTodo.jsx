@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 const AddTodo = ({ addTodoItem, todoList, clearCompleted }) => {
+	//grab persisted name from local storage
 	let persistedListName = JSON.parse(
-		//grab persisted name from local storage
 		localStorage.getItem("persistedListName")
 	);
+	// if there is no persisted name then give it a default
 	if (!persistedListName) {
-		// if there is no persisted name then give it a default
 		persistedListName = "Todo List";
 	}
 
@@ -15,6 +15,7 @@ const AddTodo = ({ addTodoItem, todoList, clearCompleted }) => {
 	const [listName, setListName] = useState(persistedListName);
 	const [editName, setEditName] = useState(listName);
 
+	// on submit check todo length and lift state to App if the input is not empty
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (todoItem.length > 0) {
@@ -23,12 +24,14 @@ const AddTodo = ({ addTodoItem, todoList, clearCompleted }) => {
 		}
 	};
 
+	// calls the function to clear completed todos
 	const clearBtnClick = (e) => {
 		e.preventDefault();
 		console.log("clear");
 		clearCompleted();
 	};
 
+	// if new list name input is not empty change listName in state, then set changeName to false to remove input
 	const changeListName = (e) => {
 		e.preventDefault();
 		console.log("change name");
@@ -38,6 +41,7 @@ const AddTodo = ({ addTodoItem, todoList, clearCompleted }) => {
 		setChangeName(false);
 	};
 
+	// if listName state changes then update state in local storage
 	useEffect(() => {
 		localStorage.setItem("persistedListName", JSON.stringify(listName));
 	}, [listName]);

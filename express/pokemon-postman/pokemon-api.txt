@@ -1,0 +1,7 @@
+tested out the API with these endpoints
+
+https://pokeapi.co/api/v2/pokemon/pikachu
+https://pokeapi.co/api/v2/pokemon/244
+https://pokeapi.co/api/v2/pokemon-color/blue
+https://pokeapi.co/api/v2/type/flying
+https://pokeapi.co/api/v2/location/eterna-city
