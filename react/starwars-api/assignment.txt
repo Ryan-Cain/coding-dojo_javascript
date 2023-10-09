@@ -1,0 +1,9 @@
+Create a dropdown menu that allows the user to choose the resource they are looking for
+
+Next to the dropdown menu, create an input field that accepts a number that will be used to query a specific id.
+
+Add a button to allow them to send a request to the API.
+
+On submission, navigate to the appropriate route and render at least 4 attributes for that specific resource.
+
+If the request is unsuccessful, create an error message that says "These aren't the droids you're looking for" with a picture of Obi-Wan Kenobi.

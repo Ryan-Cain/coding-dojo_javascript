@@ -1,0 +1,11 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    margin: 125px auto 25px auto;
+}
+input, select {
+    margin-right: 15px;
+}
