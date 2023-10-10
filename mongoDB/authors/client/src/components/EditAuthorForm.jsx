@@ -1,42 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 
-const EditAuthorForm = ({ author }) => {
-	const [title, setTitle] = useState("");
+const EditAuthorForm = () => {
+	const [author, setAuthor] = useState("");
+	const [errors, setErrors] = useState([]);
 	const navigate = useNavigate();
+	const { id } = useParams();
+
+	useEffect(() => {
+		axios
+			.get("http://localhost:8000/api/authors/" + id)
+			.then((res) => {
+				setAuthor(res.data.name);
+				// navigate("/client");
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log("submitted");
 		const authorObject = {
-			title,
+			name: author,
 		};
+
 		axios
-			.patch(
-				"http://localhost:8000/api/" + author._id + "/edit",
-				authorObject
-			)
+			.patch("http://localhost:8000/api/" + id + "/edit", authorObject)
 			.then((res) => {
 				navigate("/");
 			})
-			.catch((err) => console.log(err));
-		setTitle("");
+			.catch((err) => {
+				const errorResponse = err.response.data.errors;
+				const errorArr = [];
+				for (const key of Object.keys(errorResponse)) {
+					errorArr.push(errorResponse[key].message);
+				}
+				setErrors(errorArr);
+			});
+		setAuthor("");
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			{/* {JSON.stringify(author)} */}
-			<h1>Author Manager</h1>
-			<div>
-				<label>Title</label>
+		<>
+			<Link to="/">Home</Link>
+			<h5>Edit this author</h5>
+			<form onSubmit={handleSubmit}>
+				{errors && <p>{errors}</p>}
+				<label>Name</label>
 				<input
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
+					value={author}
+					onChange={(e) => setAuthor(e.target.value)}
 				/>
-			</div>
-			<button>Save Edit</button>
-		</form>
+				<div>
+					<button onClick={() => navigate("/")}>Cancel</button>
+					<button>Submit</button>
+				</div>
+			</form>
+		</>
 	);
 };
 

@@ -1,14 +1,22 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ShowAllAuthors = () => {
 	const [authors, setAuthors] = useState(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		axios
 			.get("http://localhost:8000/api/authors")
-			.then((res) => setAuthors(res.data))
+			.then((res) => {
+				res.data.sort((a, b) => {
+					let aName = a.name.toLowerCase();
+					let bName = b.name.toLowerCase();
+					return aName < bName ? -1 : aName > bName ? 1 : 0;
+				});
+				setAuthors(res.data);
+			})
 			.catch((err) => console.log(err));
 	}, []);
 
@@ -27,7 +35,7 @@ const ShowAllAuthors = () => {
 	return (
 		<div className="authors">
 			<Link to="/authors/new">Add an author</Link>
-			<h3>We have quotes by:</h3>
+			<h5>We have quotes by:</h5>
 			<table className="table">
 				<thead>
 					<tr>
@@ -36,25 +44,38 @@ const ShowAllAuthors = () => {
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>Bill</td>
-						<td>Edit Delete</td>
-					</tr>
+					{authors &&
+						authors.map((author, idx) => {
+							return (
+								<tr key={idx} className="author-item">
+									<td>
+										<h5 to={"/authors/" + author._id}>
+											{author.name}
+										</h5>
+									</td>
+									<td>
+										<button
+											onClick={() =>
+												navigate(
+													"/authors/" + author._id
+												)
+											}
+										>
+											Edit
+										</button>
+										<button
+											onClick={() =>
+												deleteAuthor(author._id)
+											}
+										>
+											Delete
+										</button>
+									</td>
+								</tr>
+							);
+						})}
 				</tbody>
 			</table>
-			{authors &&
-				authors.map((author, idx) => {
-					return (
-						<div className="author-item">
-							<Link key={idx} to={"/authors/" + author._id}>
-								{author.title}
-							</Link>
-							<button onClick={() => deleteAuthor(author._id)}>
-								Delete
-							</button>
-						</div>
-					);
-				})}
 		</div>
 	);
 };

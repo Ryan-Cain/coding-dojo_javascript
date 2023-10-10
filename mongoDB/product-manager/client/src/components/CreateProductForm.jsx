@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const CreateProductForm = ({ changeRender }) => {
+const CreateProductForm = () => {
 	const [title, setTitle] = useState("");
 	const [price, setPrice] = useState("");
 	const [description, setDescription] = useState("");
@@ -18,7 +18,6 @@ const CreateProductForm = ({ changeRender }) => {
 			.post("http://localhost:8000/api/products", productObject)
 			.then((res) => {
 				console.log(res);
-				changeRender();
 			})
 			.catch((err) => console.log(err));
 		setTitle("");

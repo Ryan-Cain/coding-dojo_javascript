@@ -5,7 +5,7 @@ const Author = require("../models/Author.model");
 module.exports.readAll = (req, res) => {
 	Author.find()
 		.then((allAuthors) => res.json(allAuthors))
-		.catch((err) => res.status(404).json(err));
+		.catch((err) => res.status(400).json(err));
 };
 
 // READ ONE
@@ -15,7 +15,7 @@ module.exports.readOne = (req, res) => {
 			res.json(oneAuthor);
 		})
 		.catch((err) => {
-			res.status(404).json(err);
+			res.status(400).json(err);
 		});
 };
 
@@ -26,7 +26,7 @@ module.exports.create = (req, res) => {
 			res.json(newAuthor);
 		})
 		.catch((err) => {
-			res.status(404).json(err);
+			res.status(400).json(err);
 		});
 };
 
@@ -40,7 +40,7 @@ module.exports.update = (req, res) => {
 			res.json(updatedAuthor);
 		})
 		.catch((err) => {
-			res.status(404).json(err);
+			res.status(400).json(err);
 		});
 };
 
@@ -51,6 +51,6 @@ module.exports.delete = (req, res) => {
 			res.json({ result: result });
 		})
 		.catch((err) => {
-			res.status(404).json(err);
+			res.status(400).json(err);
 		});
 };

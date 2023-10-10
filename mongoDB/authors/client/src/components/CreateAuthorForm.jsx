@@ -1,30 +1,32 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const CreateAuthorForm = ({ changeRender }) => {
-	const [title, setTitle] = useState("");
-	const [price, setPrice] = useState("");
-	const [description, setDescription] = useState("");
+const CreateAuthorForm = () => {
+	const [author, setAuthor] = useState("");
+	const [errors, setErrors] = useState([]);
+	const navigate = useNavigate();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log("submitted");
-		const authorObject = {
-			title,
-			price,
-			description,
+		const authorObj = {
+			name: author,
 		};
 		axios
-			.post("http://localhost:8000/api/authors", authorObject)
+			.post("http://localhost:8000/api/authors", authorObj)
 			.then((res) => {
 				console.log(res);
-				changeRender();
+				navigate("/");
 			})
-			.catch((err) => console.log(err));
-		setTitle("");
-		setPrice("");
-		setDescription("");
+			.catch((err) => {
+				const errorResponse = err.response.data.errors;
+				const errorArr = [];
+				for (const key of Object.keys(errorResponse)) {
+					errorArr.push(errorResponse[key].message);
+				}
+				setErrors(errorArr);
+			});
+		setAuthor("");
 	};
 
 	return (
@@ -32,14 +34,14 @@ const CreateAuthorForm = ({ changeRender }) => {
 			<Link to="/authors">Home</Link>
 			<h5>Add a new author:</h5>
 			<form onSubmit={handleSubmit}>
-				<label>Title:</label>
-				<br />
+				{errors && <p>{errors}</p>}
+				<label>Name:</label>
 				<input
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
+					value={author}
+					onChange={(e) => setAuthor(e.target.value)}
 				/>
 				<div className="buttons">
-					<button>Cancel</button>
+					<button onClick={() => navigate("/")}>Cancel</button>
 					<button>Submit</button>
 				</div>
 			</form>
