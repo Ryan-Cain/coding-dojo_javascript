@@ -1,6 +1,7 @@
 body {
   display: flex;
   justify-content: center;
+  background-color: grey;
 }
 
 form {
@@ -26,8 +27,29 @@ form div {
   padding: 0 10px;
 }
 .products {
+  margin-top: 125px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+.product {
+  margin-top: 125px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product .link {
+  align-self: flex-start;
+}
+.links {
+  display: flex;
+  justify-content: space-between;
+}
+.links > * {
+  margin: 5px 20px;
+}
+
+.product-item button{
+  margin-left: 25px;
 }

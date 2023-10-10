@@ -1,18 +1,18 @@
-// import the product model
-const Product = require("../models/Product.model");
+// import the author model
+const Author = require("../models/Author.model");
 
 // READ ALL
 module.exports.readAll = (req, res) => {
-	Product.find()
-		.then((allProducts) => res.json(allProducts))
+	Author.find()
+		.then((allAuthors) => res.json(allAuthors))
 		.catch((err) => res.status(404).json(err));
 };
 
 // READ ONE
 module.exports.readOne = (req, res) => {
-	Product.findOne({ _id: req.params.id })
-		.then((oneProduct) => {
-			res.json(oneProduct);
+	Author.findOne({ _id: req.params.id })
+		.then((oneAuthor) => {
+			res.json(oneAuthor);
 		})
 		.catch((err) => {
 			res.status(404).json(err);
@@ -21,9 +21,9 @@ module.exports.readOne = (req, res) => {
 
 // CREATE
 module.exports.create = (req, res) => {
-	Product.create(req.body)
-		.then((newProduct) => {
-			res.json(newProduct);
+	Author.create(req.body)
+		.then((newAuthor) => {
+			res.json(newAuthor);
 		})
 		.catch((err) => {
 			res.status(404).json(err);
@@ -32,12 +32,12 @@ module.exports.create = (req, res) => {
 
 // UPDATE
 module.exports.update = (req, res) => {
-	Product.findOneAndUpdate({ _id: req.params.id }, req.body, {
+	Author.findOneAndUpdate({ _id: req.params.id }, req.body, {
 		new: true,
 		runValidators: true,
 	})
-		.then((updatedProduct) => {
-			res.json(updatedProduct);
+		.then((updatedAuthor) => {
+			res.json(updatedAuthor);
 		})
 		.catch((err) => {
 			res.status(404).json(err);
@@ -46,7 +46,7 @@ module.exports.update = (req, res) => {
 
 // DELETE
 module.exports.delete = (req, res) => {
-	Product.deleteOne({ _id: req.params.id })
+	Author.deleteOne({ _id: req.params.id })
 		.then((result) => {
 			res.json({ result: result });
 		})
