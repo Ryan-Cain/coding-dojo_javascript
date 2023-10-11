@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import CreateProductForm from "./CreateProductForm";
+import ProductForm from "./ProductForm";
+import DeleteBtn from "./DeleteBtn";
 
 const ShowAllProducts = () => {
 	const [products, setProducts] = useState(null);
@@ -25,20 +26,40 @@ const ShowAllProducts = () => {
 			.catch((err) => console.log(err));
 	};
 
+	const product = {
+		title: "",
+		price: "",
+		description: "",
+	};
+
+	const apiCreateReq = (productObject) => {
+		axios
+			.post("http://localhost:8000/api/products", productObject)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className="products">
-			<CreateProductForm />
+			<ProductForm
+				product={product}
+				apiReq={apiCreateReq}
+				buttonTxt={"Create"}
+			/>
 			<h2>All Products</h2>
 			{products &&
 				products.map((product, idx) => {
 					return (
-						<div className="product-item">
-							<Link key={idx} to={"/products/" + product._id}>
+						<div key={idx} className="product-item">
+							<Link to={"/products/" + product._id}>
 								{product.title}
 							</Link>
-							<button onClick={() => deleteProduct(product._id)}>
-								Delete
-							</button>
+							<DeleteBtn
+								callbackFn={deleteProduct}
+								id={product._id}
+							/>
 						</div>
 					);
 				})}

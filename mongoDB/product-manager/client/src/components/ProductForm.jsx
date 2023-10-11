@@ -1,8 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const EditProductForm = ({ product }) => {
+const ProductForm = ({ product, apiReq, buttonTxt }) => {
 	const [title, setTitle] = useState(product.title);
 	const [price, setPrice] = useState(product.price);
 	const [description, setDescription] = useState(product.description);
@@ -16,15 +15,7 @@ const EditProductForm = ({ product }) => {
 			price,
 			description,
 		};
-		axios
-			.patch(
-				"http://localhost:8000/api/" + product._id + "/edit",
-				productObject
-			)
-			.then((res) => {
-				navigate("/");
-			})
-			.catch((err) => console.log(err));
+		apiReq(productObject, navigate, product._id);
 		setTitle("");
 		setPrice("");
 		setDescription("");
@@ -32,7 +23,6 @@ const EditProductForm = ({ product }) => {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			{/* {JSON.stringify(product)} */}
 			<h1>Product Manager</h1>
 			<div>
 				<label>Title</label>
@@ -56,9 +46,9 @@ const EditProductForm = ({ product }) => {
 					onChange={(e) => setDescription(e.target.value)}
 				/>
 			</div>
-			<button>Save Edit</button>
+			<button>{buttonTxt}</button>
 		</form>
 	);
 };
 
-export default EditProductForm;
+export default ProductForm;
